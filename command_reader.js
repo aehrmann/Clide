@@ -12,20 +12,33 @@ var execute = function(command) {
 	} 
 	else {
 		if (command.match(PLAY_REGEX)) {
-			var matches = PLAY_REGEX.exec(command);
-			console.log(matches);
+			var pieces = command.split(' ');
+			if(pieces.length === 1) {
+				Sequencer.playAll();
+			} 
+			else {
+				var index = parseInt(pieces[1]);
+				Sequencer.playSequence(index);	
+			}
+			
 		} 
 		else if (command.match(PAUSE_REGEX)) {
-			console.log("pause");
+			var pieces = command.split(' ');
+			if(pieces.length === 1) {
+				Sequencer.pauseAll();
+			} 
+			else {
+				var index = parseInt(pieces[1]);
+				Sequencer.pauseSequence(index);	
+			}
 		} 
 		else if (command.match(ADD_REGEX)) {
-			var pattern = new RegExp(ADD_REGEX);
-			console.log("add");
-			var matches = pattern.exec(command);
-			console.log(matches);
-			matches = pattern.exec(command);
-			console.log(matches);
-		}
+			var pieces = command.split(' ');
+			pieces = pieces.splice(1, pieces.length);
+			if(!Sequencer.addSequence(pieces.join(' '))) {
+				console.log('Bad sequence');
+			}
+		};
 	}
 };
 

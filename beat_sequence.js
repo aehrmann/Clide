@@ -1,6 +1,7 @@
 var T = require('timbre');
 
 var beats = {};
+var SAMPLE_NAMES = ['BD', 'SD', 'HH', 'HT', 'LT', 'CY'];
 
 T("audio").loadthis("drum_samples/drum_samples.wav", function() {
 	beats['BD'] = this.slice(0, 200).set({mul: 1});
@@ -17,8 +18,10 @@ var translate = function(seqString) {
 	for (var i = 0; i < parts.length; i++) {
 		if(parts[i] === ',') {
 			seq.push(null);		
-		} else {
+		} else if (SAMPLE_NAMES.indexOf(parts[i]) != -1) {
 			seq.push(beats[parts[i]]);	
+		} else {
+			return null;
 		}
 	}
 	console.log(seq);

@@ -1,48 +1,64 @@
+var T = require('timbre');
 var BeatSequence = require('./beat_sequence.js');
 
-var Sequencer = function () {};
 
-Sequencer.prototype.constructor = function() {
-	this.sequences = [];
-	this.rate = 200;
-	this.timer = T('interval', {interval: this.rate+"ms", delay: "200ms"}, function() { 
-		for (var i = 0; i < this.sequences.length; i++) {
-			this.sequences[i].playNext();
+var sequences = [];
+var rate = 200;
+var timer = T('interval', {interval: rate+"ms", delay: "200ms"}, function() { 
+	for (var i = 0; i < sequences.length; i++) {
+		sequences[i].playNext();
+	}
+});
+
+addSequence = function(sequence) {
+	if(sequence == null) {
+		return false;
+	}
+	sequences.push(new BeatSequence(sequence));
+	return true;
+};
+
+removeSequence = function(i) {
+	sequences.splice(i, 1);
+	return true;
+};
+
+playSequence = function(i) {
+	sequences[i].play();
+	return true;
+};
+
+pauseSequence = function(i) {
+	sequences[i].pause();
+	return true;
+};
+
+playAll = function() {
+	timer.start();
+	return true;
+};
+
+pauseAll = function() {
+	timer.stop();
+	return true;
+};
+
+changeSpeed = function(time) {
+	rate = time;
+	timer = T('interval', {interval: rate+"ms", delay: "200ms"}, function() {
+		for (var i = 0; i < sequences.length; i++) {
+			sequences[i].playNext();
 		};
 	});
+	return true;
 };
 
-Sequencer.prototype.addSequence = function(sequence) {
-	this.sequences.push(sequence);
-};
-
-Sequencer.prototype.removeSequence = function(i) {
-	this.sequences.splice(i, 1);
-};
-
-Sequencer.prototype.playSequence = function(i) {
-	this.sequences[i].play();
-};
-
-Sequencer.prototype.pauseSequence = function(i) {
-	this.sequences[i].pause();
-};
-
-Sequencer.prototype.playAll = function() {
-	this.timer.start();
-};
-
-Sequencer.prototype.pauseAll = function() {
-	this.timer.stop();
-};
-
-Sequencer.prototype.changeSpeed = function(time) {
-	this.rate = time;
-	this.timer = T('interval', {interval: this.rate+"ms", delay: "200ms"}, function() {
-		for (var i = 0; i < this.sequences.length; i++) {
-			this.sequences[i].playNext();
-		};
-	});
-};
-
-module.exports = Sequencer;
+module.exports = {
+	addSequence: addSequence,
+	removeSequence: removeSequence,
+	playSequence: playSequence,
+	pauseSequence: pauseSequence,
+	playAll: playAll,
+	pauseAll: pauseAll,
+	changeSpeed: changeSpeed
+}
