@@ -1,4 +1,4 @@
-#REAMDE for beatblocks
+#REAMDE for beeline
 
 ## Functional Specification
 User should be able to:
