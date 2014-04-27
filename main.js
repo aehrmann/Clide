@@ -1,3 +1,4 @@
+var nc = require('ncurses');
 var T = require('timbre')
 var CommandReader = require('./command_reader');
 
@@ -19,4 +20,7 @@ var main = function () {
 	});
 };
 
-main();
+var win = new nc.Window();
+nc.showCursor = true;
+
+// main();
