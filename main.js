@@ -1,6 +1,5 @@
 var T = require('timbre')
 var CommandReader = require('./command_reader');
-var BeatSequence = require('./beat_sequence');
 
 var sequences = [];
 
