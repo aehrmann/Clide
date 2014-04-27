@@ -107,16 +107,16 @@ var isValidCommand = function(command) {
 
 
 var execute = function(command) {
-	console.log(command);
+	// console.log(command);
 	command = command.trim();
 
-	console.log("<ENTERED: '" + command +"'>");
+	// console.log("<ENTERED: '" + command +"'>");
 	if(!isValidCommand(command)) {
 		console.log("Entered invalid command: " + command);
 	}
 	else {
 		for (var i = 0; i < commands.length; i++) {
-			console.log(commands[i].pattern);
+			// console.log(commands[i].pattern);
 			if(commands[i].pattern.test(command)) {
 				commands[i].action();
 			}
