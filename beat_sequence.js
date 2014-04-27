@@ -3,7 +3,7 @@ var T = require('timbre');
 var beats = {};
 var SAMPLE_NAMES = ['BD', 'SD', 'HH', 'HT', 'LT', 'CY'];
 
-T("audio").loadthis("drum_samples/drum_samples.wav", function() {
+T("audio").loadthis("drum_samples/808.wav", function() {
 	beats['BD'] = this.slice(0, 200).set({mul: 0.5});
 	beats['SD'] = this.slice(200, 400).set({mul: 0.5});
 	beats['HH'] = this.slice(400, 600).set({mul: 0.5});

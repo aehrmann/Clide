@@ -1,5 +1,4 @@
-var nc = require('ncurses');
-var T = require('timbre')
+var T = require('timbre');
 var CommandReader = require('./command_reader');
 
 var sequences = [];
@@ -20,7 +19,4 @@ var main = function () {
 	});
 };
 
-var win = new nc.Window();
-nc.showCursor = true;
-
-// main();
+main();

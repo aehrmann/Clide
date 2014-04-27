@@ -1,96 +1,126 @@
 var Sequencer = require('./sequencer.js');
 
-var PLAY_REGEX = /pl\s?(\d+)?/;
-var PAUSE_REGEX = /pa\s?(\d+)?/;
-var ADD_REGEX = /a\s+((,|\w{2,})\s*)+/;
-var REMOVE_REGEX = /r\s?(\d+)?/;
-var SET_SPEED_REGEX = /s\s+(\d+)+/;
+var commands = {
+	quit: function() {
+		console.log('Quitting BeatBlocks...');
+		process.exit();
+	},
+	listSequences: function() {
+		Sequencer.display('all'); 
+	},
+	listActive: function() {
+		Sequencer.display('active');
+	},
+	listInactive: function() {
+		Sequencer.display('inactive');
+	},
+	playAll: function() {
+		Sequencer.playAll();
+	},
+	play: function(i) {
+		Sequencer.playSequence(i);
+	},
+	pauseAll: function() {
+		Sequencer.pauseAll();
+	},
+	pause: function(i) {
+		Sequencer.pauseSequence(i);
+	},
+	add: function(seqString) {
+		Sequencer.addSequence(seqString);
+	},
+	clearAll: function() {
+		Sequencer.removeAll();
+	},
+	clear: function(i) {
+		Sequencer.removeSequence(i);
+	},
+	setSpeedAll: function(speed) {
+		Sequencer.setSpeedMsAll();
+	},
+	setSpeed: function(i, speed) {
+		Sequencer.setSpeedMs(i, speed);
+	}
+};
+
+var commands = [
+	{
+		pattern: new RegExp('quit|q'),
+		action: function() {
+			console.log('Quitting BeatBlocks...');
+			process.exit();
+		}
+	},
+	{
+		pattern: new RegExp('^l$'),
+		action: function() {
+			console.log('list all');
+			// Sequencer.display('all');
+		}
+	},
+	{
+		pattern: new RegExp('^la$'),
+		action: function() {
+			console.log('list active');
+			// Sequencer.display('active');
+		}
+	},
+	{
+		pattern: new RegExp('^li$'),
+		action: function() {
+			console.log('list inactive')
+			// Sequencer.display('inactive');
+		}
+	},
+	{
+		pattern: new RegExp('^pl$'),
+		action: function() {
+			console.log('play all');
+		}
+	},
+	{
+		pattern: new RegExp('^pl (\d+)$'),
+		action: function() {
+			console.log('play one');
+		}
+	}
+];
+	
+var isValidCommand = function(command) {
+	for (var i = 0; i < commands.length; i++) {
+		if(commands[i].pattern.test(command)) {
+			return true;
+		}
+	}
+	return false;
+};
+
+// 	commands: new RegExp('quit|q|l|la|li|pl|pa|cls|ss'),
+// 	quit: new RegExp('quit|q'),
+// 	list: new RegExp('^l(a|i)?$'),
+// 	play: new RegExp('^pl(\d+)?'),
+// 	pause: new RegExp('^pa\s?(\d+)?$'),
+// 	add: new RegExp('a\s+((,|\w{2,})\s*)+'),
+// 	remove: new RegExp('cls\s?(\d+)?'),
+// 	setSpeed: new RegExp('ss\s+(\d+)')
+// };
+
 
 var execute = function(command) {
+	console.log(command);
 	command = command.trim();
-	// console.log("<ENTERED: '" + command +"'>");
-	
-	if (command === 'quit' || command === 'q') {
-		process.exit();
-	} else if (command === 'ls') {
-		Sequencer.displaySequences();
+
+	console.log("<ENTERED: '" + command +"'>");
+	if(!isValidCommand(command)) {
+		console.log("Entered invalid command: " + command);
 	}
 	else {
-		if (command.match(PLAY_REGEX)) {
-			var pieces = command.split(' ');
-			if(pieces.length === 1) {
-				Sequencer.playAll();
-			} 
-			else {
-				var index = parseInt(pieces[1]);
-				if(index === 0 || index > Sequencer.numSequences()) {
-					console.log("Number out of range!");
-				}
-				Sequencer.playSequence(index-1);	
+		for (var i = 0; i < commands.length; i++) {
+			console.log(commands[i].pattern);
+			if(commands[i].pattern.test(command)) {
+				commands[i].action();
 			}
-			
-		} 
-		else if (command.match(PAUSE_REGEX)) {
-			var pieces = command.split(' ');
-			if(pieces.length === 1) {
-				Sequencer.pauseAll();
-			} 
-			else {
-				var index = parseInt(pieces[1]);
-				if(index === 0 || index > Sequencer.numSequences()) {
-					console.log("Number out of range!");
-				} 
-				else {
-					Sequencer.pauseSequence(index-1);	
-				}
-				
-			}
-		} 
-		else if (command.match(ADD_REGEX)) {
-			var pieces = command.split(' ');
-			pieces = pieces.splice(1, pieces.length);
-			if(!Sequencer.addSequence(pieces.join(' '))) {
-				console.log('Bad sequence');
-			}
-		}
-		else if (command.match(REMOVE_REGEX)) {
-			var pieces = command.split(' ');
-			if(pieces.length === 1) {
-				Sequencer.removeAll();
-			} 
-			else {
-				var index = parseInt(pieces[1]);
-				if(index === 0 || index > Sequencer.numSequences()) {
-					console.log("Number out of range!");
-				}
-				Sequencer.removeSequence(index-1);	
-			}
-		}
-		else if (command.match(SET_SPEED_REGEX)) {
-			var pieces = command.split(' ');
-			if(pieces.length === 1) {
-				console.log("No time specified...");
-			} 
-			else {
-				if (pieces.length === 3) {
-					console.log("speed for individual");
-					var index = parseInt(pieces[1]);
-					var speed = parseInt(pieces[2]);
-					if(index === 0 || index > Sequencer.numSequences()) {
-						console.log("Number out of range!");
-					}
-					else {
-						Sequencer.setSpeed(index - 1, speed);	
-					}
-				}
-				else if (pieces.length === 2) {
-					console.log("speed for all");
-					var speed = parseInt(pieces[1]);
-					Sequencer.setSpeedAll(speed);
-				}
-				
-			}
-		}
+		};
 	}
 };
 
