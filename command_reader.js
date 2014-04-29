@@ -1,8 +1,26 @@
 var Sequencer = require('./sequencer.js');
 
+var output = [];
+var outputSuccess = function(message) {
+	output.push({
+		err: null,
+		message: message
+	});
+};
+
+var outputFailure = function(message) {
+	output.push({
+		err: new Error(),
+		message: message
+	});
+};
+
+var flush = function() {
+	output = [];
+};
+
 var commands = {
 	quit: function() {
-		console.log('Quitting BeatBlocks...');
 		process.exit();
 	},
 	listSequences: function() {
@@ -47,41 +65,41 @@ var commands = [
 	{
 		pattern: new RegExp('quit|q'),
 		action: function() {
-			console.log('Quitting BeatBlocks...');
 			process.exit();
 		}
 	},
 	{
 		pattern: new RegExp('^l$'),
 		action: function() {
-			console.log('list all');
-			// Sequencer.display('all');
+			outputSuccess('list all');
+			Sequencer.display('all');
 		}
 	},
 	{
 		pattern: new RegExp('^la$'),
 		action: function() {
-			console.log('list active');
-			// Sequencer.display('active');
+			outputSuccess('list active');
+			Sequencer.display('active');
 		}
 	},
 	{
 		pattern: new RegExp('^li$'),
 		action: function() {
-			console.log('list inactive')
-			// Sequencer.display('inactive');
+			outputSuccess('list inactive');
+			Sequencer.display('inactive');
 		}
 	},
 	{
 		pattern: new RegExp('^pl$'),
 		action: function() {
-			console.log('play all');
+			outputSuccess('play all');
+			Sequencer.playAll();
 		}
 	},
 	{
 		pattern: new RegExp('^pl (\d+)$'),
 		action: function() {
-			console.log('play one');
+			outputSuccess('play one');
 		}
 	}
 ];
@@ -95,24 +113,12 @@ var isValidCommand = function(command) {
 	return false;
 };
 
-// 	commands: new RegExp('quit|q|l|la|li|pl|pa|cls|ss'),
-// 	quit: new RegExp('quit|q'),
-// 	list: new RegExp('^l(a|i)?$'),
-// 	play: new RegExp('^pl(\d+)?'),
-// 	pause: new RegExp('^pa\s?(\d+)?$'),
-// 	add: new RegExp('a\s+((,|\w{2,})\s*)+'),
-// 	remove: new RegExp('cls\s?(\d+)?'),
-// 	setSpeed: new RegExp('ss\s+(\d+)')
-// };
-
-
 var execute = function(command) {
-	// console.log(command);
+	flush();
 	command = command.trim();
 
-	// console.log("<ENTERED: '" + command +"'>");
 	if(!isValidCommand(command)) {
-		console.log("Entered invalid command: " + command);
+		outputFailure("Entered invalid command: " + command);
 	}
 	else {
 		for (var i = 0; i < commands.length; i++) {
@@ -122,6 +128,7 @@ var execute = function(command) {
 			}
 		};
 	}
+	return output;
 };
 
 module.exports.execute = execute;
