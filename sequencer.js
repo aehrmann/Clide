@@ -11,6 +11,7 @@ var addSequence = function(sequence) {
 		return false;
 	}
 	sequences.push(new BeatSequence(sequence));
+	console.log(sequences[sequences.length])
 	return true;
 };
 
@@ -83,6 +84,18 @@ var setSpeedMsAll = function(speed) {
 	return true;
 };
 
+var maxSeqStringLength = function() {
+	var sum = 0;
+	for (var i = 0; i < sequences.length; i++) {
+		if (sequences[i].toString().length > sum ) {
+			sum = sequences[i].toString().length;
+		}
+
+	};
+	return sum;
+}
+
+
 // Status can be 'all', 'active', 'inactive'
 var display = function(status) {
 	var title = '| Sequences {' + status[0].toUpperCase() + status.substring(1) + '} |';
@@ -97,7 +110,7 @@ var display = function(status) {
 	for(var i = 0; i < sequences.length; i++) {
 		displayString += (i + 1) + ': ';
 		displayString += sequences[i].toString() + ' ';
-		displayString += Array(maxSeqStringLength() - sequences[i].toString()).join(' ');
+		displayString += Array(maxSeqStringLength() - sequences[i].toString().length).join(' ');
 		displayString += '(' + (sequences[i].isPlaying() ? 'active' : 'inactive') + ') ';
 		displayString += '[' + sequences[i].currentSpeed() + 'ms]';
 		console.log(displayString);
@@ -105,14 +118,6 @@ var display = function(status) {
 	}
 }
 
-var maxSeqStringLength = function() {
-	var sum = 0;
-	for (var i = 0; i < sequences.length; i++) {
-		if (sum < sequences[i].length) 
-			sum = sequences[i].length;
-	};
-	return sum;
-}
 
 var displayAll = function() {
 	console.log('Sequences {All}');

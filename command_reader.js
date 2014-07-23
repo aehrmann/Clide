@@ -69,7 +69,7 @@ var commands = [
 		}
 	},
 	{
-		pattern: new RegExp('^l$'),
+		pattern: new RegExp('^ls$'),
 		action: function() {
 			outputSuccess('list all');
 			Sequencer.display('all');
@@ -101,7 +101,21 @@ var commands = [
 		action: function() {
 			outputSuccess('play one');
 		}
+	},
+	{
+		pattern: new RegExp('^a$'),
+		action: function() {
+			Sequencer.addSequence("BD SD");
+			Sequencer.playAll();
+		}
+	},
+	{
+		pattern: new RegExp('^pa$'),
+		action: function() {
+			Sequencer.pauseAll();
+		}
 	}
+
 ];
 	
 var isValidCommand = function(command) {

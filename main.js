@@ -1,63 +1,105 @@
-var T = require('timbre');
-var CommandReader = require('./command_reader');
-var Sequencer = require('./sequencer');
-var keypress = require('keypress');
-
-var sequences = [];
-
-var genSymbols = function(num, sym) {
-	return Array(num).join(sym);
+function Command(pattern, numArgs, action) {
+  this.pattern = new RegExp(pattern);
+  this.action = action;
+  this.numArgs = numArgs;
 }
 
-var clearScreen = function() {
-	console.log("\033[2J\033[0f");
-}
-var printTitle = function() {
-	console.log("BEATBLOX");
+Command.prototype.getMatches = function (string) {
+  var index = index || 1; // default to the first capturing group
+  var matches = [];
+  var match;
+  while (match = regex.exec(string)) {
+      matches.push(match[index]);
+  }
+  return matches;
 }
 
-var printInitial = function() {
-	console.log("|" + genSymbols(40, ' ') + "|");
-	console.log("|" + genSymbols(40, ' ') + "|");
-	console.log("|" + genSymbols(40, ' ') + "|");
-	console.log("|" + genSymbols(40, ' ') + "|");
-	console.log("|" + genSymbols(40, ' ') + "|");
-	console.log("|" + genSymbols(40, ' ') + "|");
-	console.log("|" + genSymbols(40, ' ') + "|");
-	console.log("|" + genSymbols(40, ' ') + "|");
+var commands = [
+  {
+    pattern: new RegExp('quit|q'),
+    action: function() {
+      process.exit();
+    }
+  },
+  {
+    pattern: new RegExp('^ls$'),
+    action: function() {
+      console.log("Display all sequences");
+    }
+  },
+  {
+    pattern: new RegExp('^la$'),
+    action: function() {
+      console.log("Display active sequences");
+    }
+  },
+  {
+    pattern: new RegExp('^li$'),
+    action: function() {
+      console.log("Display inactive sequences");
+    }
+  },
+  {
+    pattern: new RegExp('^pl$'),
+    action: function() {
+      outputSuccess('play all');
+      Sequencer.playAll();
+    }
+  },
+  {
+    pattern: new RegExp('^pl (\d+)$'),
+    action: function() {
+      outputSuccess('play one');
+    }
+  },
+  {
+    pattern: new RegExp('^a$'),
+    action: function() {
+      Sequencer.addSequence("BD SD");
+      Sequencer.playAll();
+    }
+  },
+  {
+    pattern: new RegExp('^pa$'),
+    action: function() {
+      Sequencer.pauseAll();
+    }
+  }
+
+];
+  
+function isValidCommand(command) {
+  for (var i = 0; i < commands.length; i++) {
+    if(commands[i].pattern.test(command)) {
+      return true;
+    }
+  }
+  return false;
 };
 
-// Simple CLI (play and pause)
-process.stdin.resume();
-process.stdin.setEncoding('utf8');
-process.stdout.resume();
-process.stdout.setEncoding('utf8');
-var util = require('util');
+function main() {
+  var readline = require('readline'),
+      rl = readline.createInterface(process.stdin, process.stdout);
+
+  console.log("Welcome to Clyde! Type 'help' to get started");
 
 
-var counter = 0;
+  rl.setPrompt('Clide > ');
+  rl.prompt();
 
-var executeCommand = function(text) {
-	clearScreen();
-	printTitle();
-	console.log(counter++);
-	printInitial();
-	console.log(genSymbols(42,'*'));
-	var output = CommandReader.execute(text);
-	for(var i = 0; i < output.length; i++) {
-		if(output[i].err) {
-			console.log(output[i].message.red);
-		} else {
-			console.log(output[i].message.green);
-		}
-	}
-	process.stdout.write("> ");
-};
-clearScreen();
-printTitle();
-
-process.stdin.on('data', executeCommand);
-clearScreen();
-printTitle();
-process.stdout.write("> ");
-
+  rl.on('line', function(line) {
+    switch(line.trim()) {
+      case 'hello':
+        console.log('world!');
+        break;
+      default:
+        console.log('Say what? I might have heard `' + line.trim() + '`');
+        break;
+    }
+    rl.prompt();
+  }).on('close', function() {
+    console.log('\nGoodbye!');
+    process.exit(0);
+  });
+}
+module.exports = Command;

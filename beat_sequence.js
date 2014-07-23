@@ -1,8 +1,16 @@
+/**************************************
+ Beat Sequence - this module contains an object representing a single sequence 
+ of samples and metadata about the sequence, including speed, and its own timer,
+ used to adjust individual sequences to different speeds.
+***************************************/
+
 var T = require('timbre');
 
 var beats = {};
+// The list of canonical sample names entered by the user
 var SAMPLE_NAMES = ['BD', 'SD', 'HH', 'HT', 'LT', 'CY'];
 
+// Load the initial samples from the 808 sample file
 T("audio").loadthis("drum_samples/808.wav", function() {
 	beats['BD'] = this.slice(0, 200).set({mul: 0.5});
 	beats['SD'] = this.slice(200, 400).set({mul: 0.5});
@@ -11,6 +19,9 @@ T("audio").loadthis("drum_samples/808.wav", function() {
 	beats['LT'] = this.slice(800, 1000).set({mul: 0.5});
 	beats['CY'] = this.slice(1000, 1200).set({mul: 0.5});
 });
+
+// As of now constructor only takes a string of sample names, but support for 
+// custom intervals is coming (default now is 200ms)
 
 var BeatSequence = function(seqString) {
 	this.index = 0;
@@ -23,6 +34,10 @@ var BeatSequence = function(seqString) {
 	});
 };
 
+// Loads the samples from the main beats array into the sequence, based on the
+// original string
+// NOTE: ',' characters represents a rest, which are represented as null in the
+// 				sequence's array of samples.
 BeatSequence.prototype.translate = function(seqString) {
 	var seq = [];
 	for (var i = 0; i < this.sequenceString.length; i++) {
@@ -37,6 +52,7 @@ BeatSequence.prototype.translate = function(seqString) {
 	return seq;
 };
 
+// Adjust the speed of the timer - in ms
 BeatSequence.prototype.setSpeed = function(speed) {
 	this.timer.stop();
 	this.speed = speed;
@@ -53,6 +69,7 @@ BeatSequence.prototype.currentSpeed = function() {
 	return this.speed;
 }
 
+// Set all sequences to off by default
 BeatSequence.prototype.playing = false;
 
 BeatSequence.prototype.play = function() {
@@ -65,6 +82,7 @@ BeatSequence.prototype.pause = function() {
 	this.playing = false;
 };
 
+// Plays the next sample in the sequence if the sequence is currently playing
 BeatSequence.prototype.playNext = function() {
 	if(this.playing && this.sequence[this.index]) {
 			this.sequence[this.index].bang().play();
@@ -75,6 +93,7 @@ BeatSequence.prototype.isPlaying = function() {
 	return this.playing;
 }
 
+// Represents the samples in the sequences. E.g. "[BD, SD, (), BD]"
 BeatSequence.prototype.toString = function() {
 	s = '[';
 	for(var i = 0; i < this.sequenceString.length; i++) {

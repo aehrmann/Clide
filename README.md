@@ -1,4 +1,4 @@
-#REAMDE for beeline
+#REAMDE for Clide
 
 ## Functional Specification
 User should be able to:
