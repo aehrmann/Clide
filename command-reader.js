@@ -63,7 +63,7 @@ var commands = {
 
 var commands = [
 	{
-		pattern: new RegExp('quit|q'),
+		pattern: new RegExp('^quit|q$'),
 		action: function() {
 			process.exit();
 		}
@@ -71,42 +71,44 @@ var commands = [
 	{
 		pattern: new RegExp('^ls$'),
 		action: function() {
-			outputSuccess('list all');
+			console.log('list all');
 			Sequencer.display('all');
 		}
 	},
 	{
 		pattern: new RegExp('^la$'),
 		action: function() {
-			outputSuccess('list active');
+			console.log('list active');
 			Sequencer.display('active');
 		}
 	},
 	{
 		pattern: new RegExp('^li$'),
 		action: function() {
-			outputSuccess('list inactive');
+			console.log('list inactive');
 			Sequencer.display('inactive');
 		}
 	},
 	{
 		pattern: new RegExp('^pl$'),
 		action: function() {
-			outputSuccess('play all');
+			console.log('play all');
 			Sequencer.playAll();
 		}
 	},
 	{
-		pattern: new RegExp('^pl (\d+)$'),
-		action: function() {
-			outputSuccess('play one');
+		pattern: new RegExp('^pl (\\d+)$'),
+		action: function(nStr) {
+			console.log('from pl n: ' + parseInt(nStr));
+			// Sequencer.playSequence();
 		}
 	},
 	{
-		pattern: new RegExp('^a$'),
-		action: function() {
-			Sequencer.addSequence("BD SD");
-			Sequencer.playAll();
+		pattern: new RegExp('^a (BD|SD|HH|HT|LT|CY| )+$', 'g'),
+		action: function(args) {
+			console.log('add: ' + args);
+			// Sequencer.addSequence("BD SD");
+			// Sequencer.playAll();
 		}
 	},
 	{
@@ -119,7 +121,7 @@ var commands = [
 ];
 	
 var isValidCommand = function(command) {
-	for (var i = 0; i < commands.length; i++) {
+	for (var i = 0, len = commands.length; i < len; i++) {
 		if(commands[i].pattern.test(command)) {
 			return true;
 		}
@@ -135,10 +137,19 @@ var execute = function(command) {
 		outputFailure("Entered invalid command: " + command);
 	}
 	else {
-		for (var i = 0; i < commands.length; i++) {
+		for (var i = 0, len = commands.length; i < len; i++) {
 			// console.log(commands[i].pattern);
-			if(commands[i].pattern.test(command)) {
-				commands[i].action();
+			var parts = commands[i].pattern.exec(command);
+			// console.log(parts);
+			if(parts) {
+				console.log(parts);
+				if(parts.length >= 1) {
+					// console.log('slice: ' + parts.slice(1));
+					commands[i].action(parts.slice(1));
+				}
+				else {
+					commands[i].action();
+				}
 			}
 		};
 	}

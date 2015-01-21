@@ -1,6 +1,6 @@
 var T = require('timbre');
 var colors = require('colors');
-var BeatSequence = require('./beat_sequence.js');
+var BeatSequence = require('./beat-sequence.js');
 
 
 var sequences = [];
