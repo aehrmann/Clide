@@ -11,13 +11,12 @@ var addSequence = function(sequence) {
 		return false;
 	}
 	sequences.push(new BeatSequence(sequence));
-	console.log(sequences[sequences.length])
 	return true;
 };
 
 var removeSequence = function(i) {
-	var removed = sequences[i];
-	sequences.splice(i, 1);
+	var removed = sequences[i-1];
+	sequences.splice(i-1, 1);
 	removed.destroy();
 	return true;
 };
@@ -29,12 +28,12 @@ var removeAll = function() {
 	sequences = [];
 }
 var playSequence = function(i) {
-	sequences[i].play();
+	sequences[i-1].play();
 	return true;
 };
 
 var pauseSequence = function(i) {
-	sequences[i].pause();
+	sequences[i-1].pause();
 	return true;
 };
 
@@ -54,7 +53,7 @@ var pauseAll = function() {
 
 var setSpeedBPM = function(index, speed) {
 	pauseAll();
-	sequences[index].setSpeed(speed);
+	sequences[index-1].setSpeed(speed);
 	playAll();
 	return true;
 };
@@ -70,7 +69,7 @@ var setSpeedBPMAll = function(speed) {
 
 var setSpeedMs = function(index, speed) {
 	pauseAll();
-	sequences[index].setSpeed(speed);
+	sequences[index-1].setSpeed(speed);
 	playAll();
 	return true;
 };

@@ -39,17 +39,19 @@ var BeatSequence = function(seqString) {
 // NOTE: ',' characters represents a rest, which are represented as null in the
 // 				sequence's array of samples.
 BeatSequence.prototype.translate = function(seqString) {
-	var seq = [];
-	for (var i = 0; i < this.sequenceString.length; i++) {
-		if(this.sequenceString[i] === ',') {
-			seq.push(null);		
-		} else if (SAMPLE_NAMES.indexOf(this.sequenceString[i]) != -1) {
-			seq.push(beats[this.sequenceString[i]]);	
+	var seq = seqString.toUpperCase().split(' ');
+	var sequence = [];
+	var position;
+	for (var i = 0, len = seq.length; i < len; i++) {
+		if(seq[i] === ',') {
+			sequence.push(null);		
+		} else if (SAMPLE_NAMES.indexOf(seq[i]) != -1) {
+			sequence.push(beats[seq[i]]);	
 		} else {
 			return null;
 		}
 	}
-	return seq;
+	return sequence;
 };
 
 // Adjust the speed of the timer - in ms
@@ -87,7 +89,7 @@ BeatSequence.prototype.playNext = function() {
 	if(this.playing && this.sequence[this.index]) {
 			this.sequence[this.index].bang().play();
 	}
-	this.index = (this.index + 1) % this.sequence.length;
+	this.index = (this.index + 1) % (this.sequence.length);
 };
 BeatSequence.prototype.isPlaying = function() {
 	return this.playing;
