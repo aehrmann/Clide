@@ -1,4 +1,5 @@
-var reader = require('./command-reader');
+var reader = require('./command-reader'),
+    readline = require('readline');
 
 var welcomeString = 
    ['Welcome to Clide! Use the commands to play sequences.',
@@ -30,8 +31,7 @@ var welcomeString =
    ].join('\n');
 
 function main() {
-  var readline = require('readline'),
-      rl = readline.createInterface(process.stdin, process.stdout);
+  var rl = readline.createInterface(process.stdin, process.stdout);
 
   console.log(welcomeString);
   rl.setPrompt('Clide > ');
