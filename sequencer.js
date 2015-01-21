@@ -38,6 +38,7 @@ var pauseSequence = function(i) {
 };
 
 var playAll = function() {
+	pauseAll();
 	for (var i = 0; i < sequences.length; i++) {
 		sequences[i].play();
 	};

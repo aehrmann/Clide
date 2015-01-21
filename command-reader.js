@@ -1,75 +1,5 @@
 var Sequencer = require('./sequencer.js');
 
-var output = [];
-var outputSuccess = function(message) {
-	output.push({
-		err: null,
-		message: message
-	});
-};
-
-var outputFailure = function(message) {
-	output.push({
-		err: new Error(),
-		message: message
-	});
-};
-
-var flush = function() {
-	output = [];
-};
-
-var commands = {
-	quit: function() {
-		process.exit();
-	},
-	listSequences: function() {
-		Sequencer.display('all'); 
-	},
-	listActive: function() {
-		Sequencer.display('active');
-	},
-	listInactive: function() {
-		Sequencer.display('inactive');
-	},
-	playAll: function() {
-		Sequencer.playAll();
-		Sequencer.display('all');
-	},
-	play: function(i) {
-		Sequencer.playSequence(i);
-		Sequencer.display('all');
-	},
-	pauseAll: function() {
-		Sequencer.pauseAll();
-		Sequencer.display('all');
-	},
-	pause: function(i) {
-		Sequencer.pauseSequence(i);
-		Sequencer.display('all');
-	},
-	add: function(seqString) {
-		Sequencer.addSequence(seqString);
-		Sequencer.display('all');
-	},
-	clearAll: function() {
-		Sequencer.removeAll();
-		Sequencer.display('all');
-	},
-	clear: function(i) {
-		Sequencer.removeSequence(i);
-		Sequencer.display('all');
-	},
-	setSpeedAll: function(speed) {
-		Sequencer.setSpeedMsAll();
-		Sequencer.display('all');
-	},
-	setSpeed: function(i, speed) {
-		Sequencer.setSpeedMs(i, speed);
-		Sequencer.display('all');
-	}
-};
-
 var commands = [
 	{
 		pattern: new RegExp('^quit|q$'),
@@ -160,7 +90,6 @@ var isValidCommand = function(command) {
 };
 
 var execute = function(command) {
-	flush();
 	command = command.trim();
 
 	if(!isValidCommand(command)) {
@@ -170,6 +99,8 @@ var execute = function(command) {
 		for (var i = 0, len = commands.length; i < len; i++) {
 			var parts = commands[i].pattern.exec(command);
 			if(parts) {
+				// If the pattern for a command captures anything, 
+				// pass it to the action function
 				if(parts.length >= 1) {
 					commands[i].action(parts.slice(1));
 				}
@@ -179,7 +110,6 @@ var execute = function(command) {
 			}
 		};
 	}
-	return output;
 };
 
 module.exports.execute = execute;
