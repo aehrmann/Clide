@@ -9,17 +9,28 @@ User should be able to:
 - User should be able to set the speed of all or individual sequence
 
 Commands:
+
 quit, q - quit
 ls - list sequences
-lsa - list active sequences
-lsi - list unactive sequences
+la - list active sequences
+li - list unactive sequences
 
-(all play and pause commands stop and restart all sequences to keep time)
 pl [i] - play sequences (or ith if specified)
 pa [i] - pause sequences (or ith if specified)
 
-a sequence_string - add new sequence
+clear - remove all sequences 
+rm [i] - removes ith sequence
 
-cls [i] - remove all sequences (or ith sequence) [prompts for confirmation]
+ss [i] time: in ms - set speed for ith sequence
 
-ss [i] time: in BPM or ms - set speed for all sequences(or ith sequence is specified)
+a [sequence_string] - add new sequence
+(sequence strings are composed of sample names separated by spaces)
+
+Available samples (not case sensitive): 
+* BD - bass drum
+* SD - snare drum
+* HH - high hat
+* HT - high tom
+* LT - low tom
+* CY - cymbal
+* ,  - rest
