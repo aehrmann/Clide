@@ -12,12 +12,12 @@ var SAMPLE_NAMES = ['BD', 'SD', 'HH', 'HT', 'LT', 'CY'];
 
 // Load the initial samples from the 808 sample file
 T("audio").loadthis("drum_samples/808.wav", function() {
-	beats['BD'] = this.slice(0, 200).set({mul: 0.5});
-	beats['SD'] = this.slice(200, 400).set({mul: 0.5});
-	beats['HH'] = this.slice(400, 600).set({mul: 0.5});
-	beats['HT'] = this.slice(600, 800).set({mul: 0.5});
-	beats['LT'] = this.slice(800, 1000).set({mul: 0.5});
-	beats['CY'] = this.slice(1000, 1200).set({mul: 0.5});
+	beats['BD'] = this.slice(0, 200).set({mul: 0.3});
+	beats['SD'] = this.slice(200, 400).set({mul: 0.3});
+	beats['HH'] = this.slice(400, 600).set({mul: 0.3});
+	beats['HT'] = this.slice(600, 800).set({mul: 0.3});
+	beats['LT'] = this.slice(800, 1000).set({mul: 0.3});
+	beats['CY'] = this.slice(1000, 1200).set({mul: 0.3});
 });
 
 // As of now constructor only takes a string of sample names, but support for 
