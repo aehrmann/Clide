@@ -8,25 +8,22 @@ User should be able to:
 - User should be able to remove a sequence or clear all sequences
 - User should be able to set the speed of all or individual sequence
 
-Commands:
+## Commands:
 
-quit, q - quit
-ls - list sequences
-la - list active sequences
-li - list unactive sequences
+* quit, q - quit
+* ls - list sequences
+* pl [i] - play sequences (or ith if specified)
+* pa [i] - pause sequences (or ith if specified)
 
-pl [i] - play sequences (or ith if specified)
-pa [i] - pause sequences (or ith if specified)
+* clear - remove all sequences 
+* rm [i] - removes ith sequence
 
-clear - remove all sequences 
-rm [i] - removes ith sequence
+* ss [i] time: in ms - set speed for ith sequence
 
-ss [i] time: in ms - set speed for ith sequence
-
-a [sequence_string] - add new sequence
+* a [sequence_string] - add new sequence
 (sequence strings are composed of sample names separated by spaces)
 
-Available samples (not case sensitive): 
+## Available samples (not case sensitive): 
 * BD - bass drum
 * SD - snare drum
 * HH - high hat
