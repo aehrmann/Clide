@@ -6,8 +6,6 @@ var welcomeString =
     'Here are the commands:',
     'quit, q - quit',
     'ls - list sequences',
-    'la - list active sequences',
-    'li - list unactive sequences',
     '',
     'pl [i] - play sequences (or ith if specified)',
     'pa [i] - pause sequences (or ith if specified)',

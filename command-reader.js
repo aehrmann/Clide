@@ -10,19 +10,8 @@ var commands = [
 	{
 		pattern: new RegExp('^ls$'),
 		action: function() {
-			Sequencer.display('all');
-		}
-	},
-	{
-		pattern: new RegExp('^la$'),
-		action: function() {
-			Sequencer.display('active');
-		}
-	},
-	{
-		pattern: new RegExp('^li$'),
-		action: function() {
-			Sequencer.display('inactive');
+			// List of sequences is printed automatically after each command
+			return;
 		}
 	},
 	{
@@ -30,7 +19,6 @@ var commands = [
 		action: function() {
 			Sequencer.pauseAll();
 			Sequencer.playAll();
-			Sequencer.display('all');
 		}
 	},
 	{
@@ -38,21 +26,18 @@ var commands = [
 		action: function(nStr) {
 			var n = parseInt(nStr);
 			Sequencer.playSequence(n);
-			Sequencer.display('all');
 		}
 	},
 	{
 		pattern: new RegExp('^a (.*)$'),
 		action: function(args) {
 			Sequencer.addSequence(args[0]);
-			Sequencer.display('all');
 		}
 	},
 	{
 		pattern: new RegExp('^pa$'),
 		action: function() {
 			Sequencer.pauseAll();
-			Sequencer.display('all');
 		}
 	},
 	{
@@ -60,24 +45,20 @@ var commands = [
 		action: function(nStr) {
 			var n = parseInt(nStr);
 			Sequencer.removeSequence(n);
-			Sequencer.display('all');
 		}
 	},
 	{
 		pattern: new RegExp('^clear$'),
 		action: function() {
 			Sequencer.removeAll();
-			Sequencer.display('all');
 		}
 	},
 	{
 		pattern: new RegExp('^ss (\\d+) (\\d+)$'),
 		action: function(args) {
 			Sequencer.setSpeedMs(args[0], args[1]);
-			Sequencer.display('all');
 		}
 	}
-
 ];
 	
 var isValidCommand = function(command) {
@@ -107,6 +88,7 @@ var execute = function(command) {
 				else {
 					commands[i].action();
 				}
+				Sequencer.display('all');
 			}
 		};
 	}
