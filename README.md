@@ -1,12 +1,4 @@
-#REAMDE for Clide
-
-## Functional Specification
-User should be able to:
-- List all sequences, inactive, active, or both
-- User should be able to play or pause all sequences or individual sequences
-- User should be able to add a new sequence
-- User should be able to remove a sequence or clear all sequences
-- User should be able to set the speed of all or individual sequence
+# Clide - the command line beat sequencer
 
 ## Commands:
 
