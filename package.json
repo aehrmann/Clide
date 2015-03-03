@@ -1,0 +1,25 @@
+{
+  "name": "clide",
+  "version": "1.0.0",
+  "description": "Command line sequencer built on Node",
+  "main": "main.js",
+	"private": "true",
+  "dependencies": {
+    "colors": "^0.6.2",
+    "timbre": "^14.11.25"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aehrmann/clide.git"
+  },
+  "author": "Ari Ehrmann",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aehrmann/clide/issues"
+  },
+  "homepage": "https://github.com/aehrmann/clide"
+}
