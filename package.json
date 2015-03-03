@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Command line sequencer built on Node",
   "main": "main.js",
-	"private": "true",
+  "private": "true",
   "dependencies": {
     "colors": "^0.6.2",
     "timbre": "^14.11.25"
