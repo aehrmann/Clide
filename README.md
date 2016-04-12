@@ -5,6 +5,10 @@ the acronym CLI ("command line interface") and the name of the legendary
 drummer [Clyde Stubblefield]("https://en.wikipedia.org/wiki/Clyde_Stubblefield"). I know,
 not terribly clever, forgive me.
 
+## Setup and start
+  1. Clone repo
+  2. Run `npm install` to grab the dependencies
+  3. Run `npm run clide` to start the program
 
 ## Commands:
 
